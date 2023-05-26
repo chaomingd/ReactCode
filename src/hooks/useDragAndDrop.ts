@@ -239,8 +239,12 @@ export function useDrop(domRef: TDomRef, options: IDropOptions) {
       }
       store.enterDropArea = false;
     };
-    Signal.on(`${SignalKey}-mousemove`, onMouseMove);
-    Signal.on(`${SignalKey}-mouseup`, onMouseUp);
+    const unMouseMove = Signal.on(`${SignalKey}-mousemove`, onMouseMove);
+    const unMouseUp = Signal.on(`${SignalKey}-mouseup`, onMouseUp);
+    return () => {
+      unMouseMove();
+      unMouseUp();
+    }
   }, [domRef]);
 }
 
